@@ -11,6 +11,11 @@ próximos meses.
 
 ## Papel na arquitetura
 
+![Fluxograma da arquitetura do MVP](docs/architecture.png)
+
+<details>
+<summary>Mesmo diagrama em Mermaid (fonte versionada, renderizada pelo GitHub)</summary>
+
 ```mermaid
 flowchart LR
     EXT["API externa<br/>Frankfurter<br/>(câmbio)"]
@@ -27,6 +32,8 @@ flowchart LR
     MAIN -.-> CACHE
     THIS -.-> CACHE
 ```
+
+</details>
 
 A API principal nunca acessa o banco de metas: toda leitura e escrita passa por este serviço.
 Se ele estiver indisponível, a principal degrada de forma controlada e continua respondendo sem a
@@ -238,6 +245,12 @@ tests/                 # testes automatizados
 ```
 
 ---
+
+## Repositórios do MVP
+
+- Componente principal: `mvp-subscription-api` — é lá que vivem o `docker-compose.yml` e a
+  documentação da API externa.
+- Componente secundária: este repositório.
 
 ## Licença
 
