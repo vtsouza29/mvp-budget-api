@@ -49,7 +49,19 @@ avaliação de metas.
 
 ## Como executar
 
-### Com Docker (recomendado)
+### Junto com a componente principal
+
+O MVP completo sobe pelo `docker-compose.yml`, que vive na **raiz do repositório da componente
+principal** (`mvp-subscription-api`). Clone os dois repositórios lado a lado e rode o compose de lá:
+
+```bash
+cd ../mvp-subscription-api
+docker compose up --build
+```
+
+Este serviço fica exposto em <http://localhost:8001/docs>.
+
+### Somente esta componente
 
 ```bash
 docker build -t mvp-budget-api .
