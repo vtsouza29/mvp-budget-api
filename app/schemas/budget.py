@@ -18,6 +18,19 @@ _THRESHOLD = Field(
 class BudgetCreate(BaseModel):
     """Payload to create a budget for a category."""
 
+    # Exemplo pré-preenchido no Swagger. Usa OTHER porque as demais categorias
+    # já vêm com meta cadastrada pelo seed, e o cadastro duplicado devolve 409.
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "category": "OTHER",
+                "monthly_limit_brl": 60.00,
+                "alert_threshold_pct": 80,
+                "active": True,
+            }
+        }
+    )
+
     category: SpendCategory = Field(description="Categoria de gasto controlada por esta meta.")
     monthly_limit_brl: MoneyIn = Field(description="Limite mensal em reais.")
     alert_threshold_pct: int = _THRESHOLD
@@ -26,6 +39,17 @@ class BudgetCreate(BaseModel):
 
 class BudgetUpdate(BaseModel):
     """Full replacement payload, matching PUT semantics."""
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "category": "OTHER",
+                "monthly_limit_brl": 90.00,
+                "alert_threshold_pct": 70,
+                "active": True,
+            }
+        }
+    )
 
     category: SpendCategory = Field(description="Categoria de gasto controlada por esta meta.")
     monthly_limit_brl: MoneyIn = Field(description="Limite mensal em reais.")

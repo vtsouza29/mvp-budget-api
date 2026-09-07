@@ -2,7 +2,7 @@
 
 from datetime import date
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.core.enums import BillingCycle, SpendCategory
 from app.schemas.common import MoneyIn
@@ -21,6 +21,40 @@ class ProjectionSubscription(BaseModel):
 
 class ProjectionRequest(BaseModel):
     """Set of subscriptions to project forward."""
+
+    # Um ciclo de cada tipo, para a resposta mostrar a distribuição mensal,
+    # trimestral e anual em uma única chamada.
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "months": 12,
+                "start_month": "2026-09",
+                "subscriptions": [
+                    {
+                        "name": "Streaming Plus",
+                        "category": "STREAMING",
+                        "amount_brl": 55.90,
+                        "billing_cycle": "MONTHLY",
+                        "next_renewal_on": "2026-09-20",
+                    },
+                    {
+                        "name": "Cloud Backup",
+                        "category": "SAAS",
+                        "amount_brl": 61.28,
+                        "billing_cycle": "QUARTERLY",
+                        "next_renewal_on": "2026-10-01",
+                    },
+                    {
+                        "name": "Curso de Arquitetura",
+                        "category": "EDUCATION",
+                        "amount_brl": 1479.19,
+                        "billing_cycle": "YEARLY",
+                        "next_renewal_on": "2027-03-15",
+                    },
+                ],
+            }
+        }
+    )
 
     months: int = Field(default=12, ge=1, le=36, description="Tamanho da janela de projeção.")
     start_month: str | None = Field(
