@@ -54,6 +54,24 @@ avaliação de metas.
 
 ---
 
+## Pré-requisitos
+
+| Ferramenta | Versão | Para quê |
+|---|---|---|
+| [Docker](https://docs.docker.com/get-docker/) + Docker Compose | Docker 24+ / Compose v2 | Executar a componente em container (caminho recomendado) |
+| [Git](https://git-scm.com/downloads) | qualquer recente | Clonar os repositórios |
+| [Python](https://www.python.org/downloads/) | **3.13** (mínimo 3.10) | Apenas para rodar localmente, fora do Docker |
+
+Antes de subir o container, confirme que o **Docker está em execução** (no macOS e no Windows,
+abra o Docker Desktop) com `docker info`.
+
+> **macOS:** o `python3` que vem com o sistema é o 3.9, que **não** instala as dependências
+> (`fastapi` exige Python 3.10+). Confira com `python3 --version`; se for inferior a 3.10, use o
+> executável versionado (`python3.13`), instalado por `brew install python@3.13` ou pelo
+> instalador oficial.
+
+---
+
 ## Como executar
 
 ### Junto com a componente principal
@@ -62,7 +80,9 @@ O MVP completo sobe pelo `docker-compose.yml`, que vive na **raiz do repositóri
 principal** (`mvp-subscription-api`). Clone os dois repositórios lado a lado e rode o compose de lá:
 
 ```bash
-cd ../mvp-subscription-api
+git clone https://github.com/vtsouza29/mvp-subscription-api.git
+git clone https://github.com/vtsouza29/mvp-budget-api.git
+cd mvp-subscription-api
 docker compose up --build
 ```
 
@@ -81,12 +101,14 @@ Documentação interativa em <http://localhost:8000/docs>.
 ### Localmente
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+python3.13 -m venv .venv          # ou qualquer Python >= 3.10
+source .venv/bin/activate         # Windows: .venv\Scripts\activate
 pip install -r requirements-dev.txt
 cp .env.example .env
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8001
 ```
+
+A porta `8001` é a que a API principal espera no `BUDGET_API_URL` do seu `.env.example`.
 
 ### Populando dados de demonstração
 
@@ -248,9 +270,13 @@ tests/                 # testes automatizados
 
 ## Repositórios do MVP
 
-- Componente principal: `mvp-subscription-api` — é lá que vivem o `docker-compose.yml` e a
-  documentação da API externa.
-- Componente secundária: este repositório.
+| Componente | Repositório |
+|---|---|
+| Principal — `mvp-subscription-api` | https://github.com/vtsouza29/mvp-subscription-api |
+| Secundária — `mvp-budget-api` (este) | https://github.com/vtsouza29/mvp-budget-api |
+
+É no repositório da componente principal que vivem o `docker-compose.yml` e a documentação da API
+externa (Frankfurter).
 
 ## Licença
 
